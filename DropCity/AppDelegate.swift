@@ -59,6 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
         UIApplication.sharedApplication().registerForRemoteNotifications()
         
+        GMSServices.provideAPIKey("AIzaSyAvsfWv38L7sAW-FEhPUMnGOv5WK9KJE6M")
         return true
     }
     

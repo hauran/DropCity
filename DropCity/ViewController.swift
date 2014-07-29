@@ -11,9 +11,10 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager: CLLocationManager!
+    var mapView_: GMSMapView!
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidAppear(true)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"drawAShape:", name: "replyPressed", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"showAMessage:", name: "likePressed", object: nil)
@@ -38,16 +39,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         UIApplication.sharedApplication().scheduleLocalNotification(notification)
         
-        
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        //        locationManager.requestWhenInUseAuthorization()
+        //locationManager.requestWhenInUseAuthorization()
         locationManager.requestAlwaysAuthorization()
         
         // Do any additional setup after loading the view, typically from a nib.
+        
     }
-    
     
     
     func locationManager(manager: CLLocationManager!,
@@ -99,7 +99,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locSchoolNotification.regionTriggersOnce = true
         locSchoolNotification.region = CLCircularRegion(center: CLLocationCoordinate2DMake(40.6654680, -73.9897260), radius: 50, identifier: "dfdd23asdfasetw456745645w")
         UIApplication.sharedApplication().scheduleLocalNotification(locSchoolNotification)
-        
         NSLog("done")
     }
     
@@ -108,9 +107,28 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var locationObj = locationArray.lastObject as CLLocation
         var coord = locationObj.coordinate
         locationManager.stopUpdatingLocation()
-        NSLog("Location \(coord.latitude) \(coord.longitude)")
+        initMap(coord)
     }
     
+    func initMap(coord:CLLocationCoordinate2D){
+        var camera:GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(coord.latitude, longitude:coord.longitude, zoom:15)
+        mapView_ = GMSMapView.mapWithFrame(self.view.frame, camera: camera)
+//        mapView_.myLocationEnabled = true // the blue dot
+        self.view = mapView_;
+
+        var mapInsets:UIEdgeInsets = UIEdgeInsetsMake(0, 0, (self.view.frame.height)/2, 0)
+        mapView_.padding = mapInsets
+        
+        var marker:GMSMarker = GMSMarker()
+        NSLog("Location \(coord.latitude) \(coord.longitude)")
+        marker.position = CLLocationCoordinate2DMake(coord.latitude, coord.longitude);
+        marker.title = "Drop City";
+//        marker.snippet = "Australia";
+        marker.map = mapView_;
+    }
+    
+    
+   
     
     func drawAShape(notification:NSNotification){
         var view:UIView = UIView(frame:CGRectMake(10, 10, 100, 100))

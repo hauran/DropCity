@@ -22,8 +22,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>So we know when to send you a message - Always</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>So we know when to send you a message - When in Use</string>
 	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
+	<string>Storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

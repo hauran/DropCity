@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "94C3792B197F4DDD00C359BE"
-               BuildableName = "DropCity.app"
+               BuildableName = "dropcity.app"
                BlueprintName = "DropCity"
                ReferencedContainer = "container:DropCity.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "94C3792B197F4DDD00C359BE"
-            BuildableName = "DropCity.app"
+            BuildableName = "dropcity.app"
             BlueprintName = "DropCity"
             ReferencedContainer = "container:DropCity.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "94C3792B197F4DDD00C359BE"
-            BuildableName = "DropCity.app"
+            BuildableName = "dropcity.app"
             BlueprintName = "DropCity"
             ReferencedContainer = "container:DropCity.xcodeproj">
          </BuildableReference>
@@ -80,7 +80,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "94C3792B197F4DDD00C359BE"
-            BuildableName = "DropCity.app"
+            BuildableName = "dropcity.app"
             BlueprintName = "DropCity"
             ReferencedContainer = "container:DropCity.xcodeproj">
          </BuildableReference>
