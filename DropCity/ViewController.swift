@@ -127,11 +127,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         msgTextField = UITextField(frame: CGRect(x: 10, y: 80, width: self.view.frame.width - 20, height: 40.00))
         msgTextField.textAlignment = NSTextAlignment.Center
         msgTextField.font = UIFont(name: "Helvetica Neue", size: 30)
-        msgTextField.becomeFirstResponder()
         self.view.addSubview(msgTextField)
+        msgTextField.becomeFirstResponder()
 
 //        delay(1) { ()
-//            print(self.msgTextField.canBecomeFirstResponder())
 //            self.msgTextField.becomeFirstResponder()
 //        }
 
@@ -146,8 +145,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         dropButton.addTarget(self, action:"drop:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(dropButton)
         
-        
-        msgTextField.becomeFirstResponder()
     }
     
     
@@ -159,7 +156,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             self.dropButton.layer.cornerRadius = 10
         }, completion: {
             (value: Bool) in
-            
+            self.msgTextField.resignFirstResponder()
             self.dropButton.font = UIFont(name: "Helvetica Neue", size: 20)
             self.dropButton.setTitle("DROPPED", forState: UIControlState.Normal)
         })
