@@ -9,9 +9,13 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     var locationManager: CLLocationManager!
     var mapView_: GMSMapView!
+    var dropButton:UIButton!
+    var msgTextField:UITextField!
+    
+    @IBOutlet var DropButton: UIButton
     
     override func viewDidLoad() {
         super.viewDidAppear(true)
@@ -107,35 +111,86 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var locationObj = locationArray.lastObject as CLLocation
         var coord = locationObj.coordinate
         locationManager.stopUpdatingLocation()
-        initMap(coord)
+        initView(coord)
     }
     
-    func initMap(coord:CLLocationCoordinate2D){
-        var camera:GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(coord.latitude, longitude:coord.longitude, zoom:15)
+    func initView(coord:CLLocationCoordinate2D){
+        var camera:GMSCameraPosition = GMSCameraPosition.cameraWithLatitude(coord.latitude, longitude:coord.longitude, zoom:17)
         mapView_ = GMSMapView.mapWithFrame(self.view.frame, camera: camera)
-//        mapView_.myLocationEnabled = true // the blue dot
-        self.view = mapView_;
+        mapView_.myLocationEnabled = true // the blue dot
+        self.view.addSubview(mapView_)
 
         var mapInsets:UIEdgeInsets = UIEdgeInsetsMake(0, 0, (self.view.frame.height)/2, 0)
         mapView_.padding = mapInsets
+        mapView_.alpha = 0.2
         
-        var marker:GMSMarker = GMSMarker()
-        NSLog("Location \(coord.latitude) \(coord.longitude)")
-        marker.position = CLLocationCoordinate2DMake(coord.latitude, coord.longitude);
-        marker.title = "Drop City";
-//        marker.snippet = "Australia";
-        marker.map = mapView_;
+        msgTextField = UITextField(frame: CGRect(x: 10, y: 80, width: self.view.frame.width - 20, height: 40.00))
+        msgTextField.textAlignment = NSTextAlignment.Center
+        msgTextField.font = UIFont(name: "Helvetica Neue", size: 30)
+        msgTextField.becomeFirstResponder()
+        self.view.addSubview(msgTextField)
+
+//        delay(1) { ()
+//            print(self.msgTextField.canBecomeFirstResponder())
+//            self.msgTextField.becomeFirstResponder()
+//        }
+
+        
+        dropButton = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        dropButton.frame = CGRectMake(0,0, 80, 80)
+        dropButton.layer.cornerRadius = 40
+        dropButton.center = CGPointMake((mapView_.bounds.size.width)/2,250)
+        dropButton.backgroundColor = UIColor.blackColor()
+        dropButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        dropButton.setTitle("DROP", forState: UIControlState.Normal)
+        dropButton.addTarget(self, action:"drop:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(dropButton)
+        
+        
+        msgTextField.becomeFirstResponder()
     }
     
     
-   
+    func drop(sender:UIButton!){
+        UIView.animateWithDuration(0.2, animations: {
+            self.msgTextField.alpha = 0
+            self.dropButton.frame = CGRectMake(0,0, 200, 80)
+            self.dropButton.center = CGPointMake((self.view.bounds.size.width)/2,250)
+            self.dropButton.layer.cornerRadius = 10
+        }, completion: {
+            (value: Bool) in
+            
+            self.dropButton.font = UIFont(name: "Helvetica Neue", size: 20)
+            self.dropButton.setTitle("DROPPED", forState: UIControlState.Normal)
+        })
+    }
+    
+    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+        textField.resignFirstResponder()
+        return true;
+    }
+    
+    
+    func delay(delay:Double, closure:()->()) {
+        dispatch_after(
+            dispatch_time(
+                DISPATCH_TIME_NOW,
+                Int64(delay * Double(NSEC_PER_SEC))
+            ),
+            dispatch_get_main_queue(), closure)
+    }
+    
+    
+    
+    
+    
+    
     
     func drawAShape(notification:NSNotification){
         var view:UIView = UIView(frame:CGRectMake(10, 10, 100, 100))
         view.backgroundColor = UIColor.redColor()
         self.view.addSubview(view)
     }
-    
     
     func showAMessage(notification:NSNotification){
         var message:UIAlertController = UIAlertController(title: "A Notification Message", message: "Hello there", preferredStyle: UIAlertControllerStyle.Alert)
@@ -144,7 +199,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.presentViewController(message, animated: true, completion: nil)
         
     }
-    
     
     func receivedRegionNotification(notification:NSNotification) {
         NSLog("Got a notification.  Tell the creator.")
